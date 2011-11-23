@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+  <head>
+    <title>Astrochem</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="dc.creator" content="Rémi Prévost - http://remiprevost.com" />
+    <link rel="stylesheet" href="./css/screen.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="./css/fonts/megalopolisextra/megalopolisextra.css" type="text/css" media="screen" />
+  </head>
+  <body>
+    <div id="wrap">
+      <div id="header">
+	<h1><a href="./">Astrochem</a></h1>
+	<p id="subtitle"><strong>A code to compute the abundance of interstellar species</strong></p>
+      </div>
+      
+      <div id="informations">
+	<ul>
+	  <li>
+	    <div class="group row">
+	      <div class="col-1">
+		<p>Astrochem is a code to study the chemistry of
+		a variety of astromical objects (dense clouds,
+		prestellar cores, protoplanetary disks, etc.).</p>
+	      </div>
+	      <div class="col-2">
+<pre><code><span style="color: #e3d796;">$</span> astrochem input.ini
+Reading input from input.ini.
+Reading source model from source.mdl.
+Reading reactions network from osu2009.chm... done.
+Found 6046 reactions involving 468 species.
+Computing abundances in shell 0...
+Done with shell 0.
+Writing abundances in output files... done.
+<span style="color: #e3d796;">$</span></code></pre>
+	      </div>
+	    </div>
+	  </li>
+	  <li>
+	    <div class="group row">
+	      <div class="col-1">
+		<p>Model parameters are read from simple text files.	      </div>
+	      <div class="col-2">
+		<pre><code><span style="color: #8a9597;">[files]</span>
+source = source.mdl
+chem = osu2009.chm
+<span style="color: #8a9597;">[phys]</span>
+chi = 1.0
+cosmic = 1.3e-17
+<span style="color: #8a9597;">[solver]</span>
+ti = 1e-6
+tf = 1e7
+<span style="color: #8a9597;">[abundances]</span>
+H2 = 0.5
+He = 0.14
+N = 2.14e-5
+O = 1.76e-4
+C(+) = 7.30e-5
+S(+) = 8.00e-8
+Si(+) = 8.00e-9
+Fe(+) = 3.00e-9
+Na(+) = 2.00e-9
+Mg(+) = 7.00e-9
+e(-) = 7.31e-5
+<span style="color: #8a9597;">[output]</span>
+abundances = H3(+),e(-),C(+),CO,HCO(+)</code></pre>
+	      </div>
+	    </div>
+	  </li>
+	  <li>
+	    <div class="group row">
+	      <div class="col-1">
+		<p>Several chemistry networks are provided with
+		  Astrochem. Astrochem's networks format is meant to
+		  be easy to read and edit, so networks can be easily
+		  adapted to fit your needs.</p>
+	      </div>
+	      <div class="col-2">
+		<pre><code><table><tr><td>H </td><td>+ H </td><td>-> H2 </td><td></td><td></td></tr>
+		      <tr><td>H2 </td><td>+ cosmic-ray </td><td>-> H2(+) </td><td>+ e(-) </td><td></td></tr>
+		      <tr><td>H3(+) </td><td>+ e(-) </td><td>-> H </td><td>+ H </td><td>+ H </td></tr>
+		      <tr><td>CO </td><td>+ uv-photon </td><td>-> C </td><td>+ O </td><td></td></tr>
+		</table></code></pre>
+	      </div>
+	    </div>
+	  </li>
+	  <li>
+	    <div class="group row">
+	      <div class="col-1"><p>Astrochem comes with several handy
+	      tools to plot the computed abundances as a function of
+	      time, or to identify the main formation or destruction
+	      channels for a given species.</div>
+	      <div class="col-2"><img class="gallery" src="img/plot-demo.gif" /></div>
+	    </div>
+	  </li>
+	  <li>
+	    <div class="group row"><p>Astrochem is fast: problems with
+		networks containing thousands of reactions between
+		hundreds of species can be solved in a few seconds. It
+		is also robust: it has been benchmarked against
+		several other chemistry codes.</p>
+	    </div>
+	  </li>
+	  <li>
+	    <div class="group row">
+	      <div class="col-1">
+		<p>Want to learn more about Astrochem? Have a look at
+		  the comprehensive documentation manual.</a></p>
+	      </div>
+	      <div class="col-2">
+		<p class="button"><a href="http://cloud.github.com/downloads/smaret/astrochem/astrochem.pdf">Read
+		the documentation manual</a></p>
+	      </div>	      
+	    </div>
+	  </li>
+	  <li>
+	    <div class="row group button button-large">
+	      <p><a href="http://cloud.github.com/downloads/smaret/astrochem/astrochem-0.4.tar.gz">Download Astrochem</a></p>
+	      <div id="version"><p>Version 0.4</p></div>
+	    </div>
+	  </li>
+          <li>
+            <div class="group row credits">
+              <p>Code by <a href="http://ipag.osug.fr/~smaret/">Sébastien Maret</a>. 
+		Website by <a href="http://exomel.com">Rémi Prévost</a>.</p>
+            </div>
+          </li>
+	</ul>
+      </div>
+    </div>
+    <a href="http://github.com/smaret/astrochem"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub" /></a>
+  </body>
+</html>
