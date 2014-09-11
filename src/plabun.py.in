@@ -2,7 +2,7 @@
 #
 #  plabun - Plot the abundances computed by Astrochem
 #
-#  Copyright (c) 2006-2014 Sebastien Maret
+#  Copyright (c) 2006-2015 Sebastien Maret
 # 
 #  This file is part of Astrochem.
 #
@@ -75,13 +75,13 @@ def main():
 
     # Parse options and arguments
     try:
-	opts, args = getopt.getopt(sys.argv[1:], "hVo:c:s:x:y:l",
-				   ["help", "version", "output=",
+        opts, args = getopt.getopt(sys.argv[1:], "hVo:s:x:y:",
+                                   ["help", "version", "output=",
                                     "cell=", "shell=", "xrange=",
                                     "yrange=", "legacy"])
     except getopt.GetoptError:
-	usage()
-	sys.exit(1)
+        usage()
+        sys.exit(1)
 
     output = None
     c =  0
@@ -91,15 +91,15 @@ def main():
     legacy = False
 
     for opt, arg in opts:
-	if opt in ("-h", "--help") :
-	    usage()
-	    sys.exit()
-	if opt in ("-V", "--version") :
-	    version()
-	    sys.exit()
-	if opt in ("-o", "--output"):
-	    output = arg
-	if opt in ("-c", "--cell") or opt in ("-s", "--shell"):
+        if opt in ("-h", "--help") :
+            usage()
+            sys.exit()
+        if opt in ("-V", "--version") :
+            version()
+            sys.exit()
+        if opt in ("-o", "--output"):
+            output = arg
+        if opt in ("-c", "--cell") or opt in ("-s", "--shell"):
             if opt in ("-s", "--shell"):
                 sys.stderr.write("plabun: warning: --shell option is deprecated, use --cell instead.\n")
             try:
@@ -125,8 +125,8 @@ def main():
             legacy = True
 
     if len(args) == 0:
-	usage()
-	sys.exit(1)
+        usage()
+        sys.exit(1)
 
     # Ignore commands, for backward compatibility
     if args[0] == "time":
@@ -161,7 +161,6 @@ def main():
             sys.stderr.write("plabun: warning: at most 6 species can be plotted, ignoring others.\n")
             species = species[0:5]
 
-
     p = biggles.FramedPlot()
     p.title = "Abundances"
     p.xtitle = "Time (yr)"
@@ -169,9 +168,9 @@ def main():
     p.ytitle = "$n(x)/n_{H}$"
     p.ylog = 1
     if xrange:
-	p.xrange = xrange
+        p.xrange = xrange
     if yrange:
-	p.yrange = yrange
+        p.yrange = yrange
     curves = []
 
     # Stack for line colors
@@ -263,7 +262,7 @@ def main():
         sys.exit(1)
 
     if output:
-	p.write_eps(output)
+        p.write_eps(output)
     else:
         p.show()
 
