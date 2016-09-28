@@ -20,13 +20,17 @@
 #  along with Astrochem.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-sys.path.append("@abs_top_srcdir@/python/") #This line (first containing sys.path.append) will be removed at instalation.
+sys.path.append("@abs_top_srcdir@/python/") # @REMOVE_INST@
 sys.path.append("@pythondir@")
 import os.path
 import getopt
 import biggles
 from numpy import *
-from astrochem.tools import readabun,readabunlegacy, _totex_species, listspecies
+try:
+    from astrochem.tools import readabun,readabunlegacy, _totex_species, listspecies
+except ImportError:
+    from tools import readabun,readabunlegacy, _totex_species, listspecies
+
 
 PACKAGE_VERSION = "@PACKAGE_VERSION@"
 PACKAGE_BUGREPORT = "@PACKAGE_BUGREPORT@"
@@ -208,7 +212,7 @@ def main():
 
             # Check that time and abund contain at least two points
             if len(time) < 2:
-                sys.stderr.write("plabun: warning: %s contains less than two non-zero abundances.\n" % filename)
+                sys.stderr.write("plabun: warning: found less than two non-zero abundances for %s.\n" % spec)
                 continue
 
             linecolor = linecolor_stack.pop(0)
@@ -218,10 +222,10 @@ def main():
             curves.append(cu)
             p.add(cu)
     else:
-        for specie in species:
+        for spec in species:
             # Read the abundance file
             try:
-                time, abund = readabun(filename,specie)
+                time, abund = readabun(filename,spec)
             except IOError as e:
                 sys.stderr.write("plroute: error: can't open %s. Error : %s\n" % (filename, e) )
                 sys.exit(1)
@@ -229,7 +233,7 @@ def main():
                 sys.stderr.write("plroute: error: can't read %s. Error : %s\n" % (filename, e) )
                 sys.exit(1)
 
-            # Pick-up values that correspond to the given time index
+            # Pick-up values that correspond to the given cell index
             try:
                 abund = abund[:, c]
             except IndexError:
@@ -243,13 +247,13 @@ def main():
 
             # Check that time and abund contain at least two points
             if len(time) < 2:
-                sys.stderr.write("plabun: warning: %s contains less than two non-zero abundances.\n" % filename)
+                sys.stderr.write("plabun: warning: found less than two non-zero abundances for %s.\n" % spec)
                 continue
 
             linecolor = linecolor_stack.pop(0)
             linecolor_stack.append(linecolor)
             cu = biggles.Curve(time, abund, linecolor = linecolor, linewidth = 2)
-            cu.label = "$" + _totex_species(specie) + "$"
+            cu.label = "$" + _totex_species(spec) + "$"
             curves.append(cu)
             p.add(cu)
 
