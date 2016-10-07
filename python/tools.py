@@ -1,6 +1,6 @@
 #  tools.py - Python tools for astrochem
 #
-#  Copyright (c) 2006-2015 Sebastien Maret
+#  Copyright (c) 2006-2016 Sebastien Maret
 #
 #  This file is part of Astrochem.
 #
@@ -695,7 +695,7 @@ def listspecies( filename ):
         s = s_d[...]
     else:
         raise IOError("%s file doest not contain \"Species\" dataset" % filename )
-    print(s);
+
     return s;
 
 def readabun(filename, specie):

@@ -1,6 +1,6 @@
 #  Makefile.am - Automake file for Astrochem
 #
-#  Copyright (c) 2006-2014 Sebastien Maret
+#  Copyright (c) 2006-2016 Sebastien Maret
 # 
 #  This file is part of Astrochem.
 #
@@ -21,4 +21,4 @@ ACLOCAL_AMFLAGS = -I m4
 
 SUBDIRS = src doc tests python networks
 
-EXTRA_DIST = README.md
+EXTRA_DIST = AUTHORS.md CONTRIBUTING.md COPYING.md INSTALL.md README.md

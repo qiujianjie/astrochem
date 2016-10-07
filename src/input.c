@@ -1,7 +1,7 @@
 /*
    input.c - Read the input files needed by Astrochem.
 
-   Copyright (c) 2006-2014 Sebastien Maret
+   Copyright (c) 2006-2016 Sebastien Maret
 
    This file is part of Astrochem.
 
@@ -94,7 +94,8 @@ read_input (const char *input_file, inp_t * input_params,
               localStr++;
 
               //Checking for all species
-              if( strncmp( localStr,"ALL", 3 ) == 0 )
+              if ((strncmp( localStr,"ALL", 3 ) == 0 ) ||
+		  (strncmp( localStr,"all", 3 ) == 0))
                 {
                   all_species = true;
                   n_output_species = network->n_species;
@@ -178,7 +179,7 @@ read_input (const char *input_file, inp_t * input_params,
               else if (strcmp (parameter, "grain_gas_mass_ratio") == 0)
                 input_params->phys.grain_gas_mass_ratio = atof (value);
               else if (strcmp (parameter, "grain_mass_density") == 0)
-                input_params->phys.grain_mass_density = atof (value);
+                input_params->phys.grain_mass_density = atof (value) * 1e-3; /* kg/m^3-> g/cm^3 */
 
               else
                 {
@@ -390,13 +391,14 @@ read_input (const char *input_file, inp_t * input_params,
   if( input_params->phys.grain_abundance != 0 )
     {
       fprintf (stderr,
-               "astrochem: warning: use of a input grain abundance is deprecated, yet still supported."
-               "Please use grain_gas_mass_ratio and grain_mass_density parameters.\n");
+               "astrochem: warning: use of a input grain abundance is deprecated, yet still supported. "
+               "Please use the grain_gas_mass_ratio and grain_mass_density parameters instead.\n");
     }
   else
     {
       double grain_mass = (4./3. * M_PI * pow( input_params->phys.grain_size, 3) * input_params->phys.grain_mass_density);
-      input_params->phys.grain_abundance = input_params->phys.grain_gas_mass_ratio * MASS_PROTON / grain_mass;
+      input_params->phys.grain_abundance = input_params->phys.grain_gas_mass_ratio * (CONST_CGSM_MASS_PROTON) / grain_mass;
+
       int g, gm, gp;
       g = find_species ("grain", network);
       gm = find_species ("grain(-)", network);

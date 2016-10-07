@@ -2,7 +2,7 @@
    astrochem.h - Function prototypes, various constant and data
    structures for Astrochem.
 
-   Copyright (c) 2006-2015 Sebastien Maret
+   Copyright (c) 2006-2016 Sebastien Maret
 
    This file is part of Astrochem.
 
@@ -35,7 +35,7 @@
 #define COSMIC_DEFAULT 1.3e-17          /* Default cosmic value */
 #define GRAIN_SIZE_DEFAULT 1e-5         /* Default grain radius, in cm */
 #define GRAIN_GAS_MASS_RATIO_DEFAULT 0  /* Default grain mass ratio */
-#define GRAIN_MASS_DENSITY_DEFAULT 3000 /* Default grain mass density, Olivine grains, kg/m3  */
+#define GRAIN_MASS_DENSITY_DEFAULT 3    /* Default grain mass density, Olivine grains, g/cm3  */
 #define TI_DEFAULT 1e-6                 /* Default initial time */
 #define TF_DEFAULT 1e7                  /* Default final time */
 #define ABS_ERR_DEFAULT 1e-20           /* Default absolute error */
@@ -43,6 +43,7 @@
 #define TIME_STEPS_DEFAULT 32           /* Default number of times steps */
 #define TRACE_ROUTES_DEFAULT 0          /* Deactivate route tracing by default */
 #define N_OUTPUT_ROUTES 16              /* Defaults number of output routes */
+#define CVODE_MXSTEPS   1e6             /* Maximum number of time steps in CVODE */
 
 #ifndef M_PI
 #define M_PI  3.14159265358979323846264338327950288

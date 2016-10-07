@@ -20,7 +20,7 @@ parallel on multi-cores and or multi-CPU computers. A variety of gas
 phase process are considered, as well as simple gas-grain
 interactions, such as freeze-out and desorption via several mechanisms
 (thermal desorption, cosmic-ray desorption and photo-desorption). The
-computed abundances are written in text files, and can be plotted in
+computed abundances are written in a HDF5 file, and can be plotted in
 different ways with the tools provided with Astrochem. Chemical
 reactions and their rates are written in a format which is meant to be
 easy to read and to edit. A tool to convert chemical networks from the
@@ -794,7 +794,7 @@ the computation. These parameters are:
 ``output``
    A list of species for which Astrochem creates an output file
    containing the abundance as a function of time and
-   position. Species names must be separated by a comma. The ``ALL``
+   position. Species names must be separated by a comma. The ``all``
    keyword may be used to have all species of the network in output.
 
 ``suffix``

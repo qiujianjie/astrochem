@@ -2,7 +2,7 @@
    solve.c - Build the ODE system and the jacobian matrix, and solve
    the system with CVODE.
 
-   Copyright (c) 2006-2014 Sebastien Maret
+   Copyright (c) 2006-2016 Sebastien Maret
 
    This file is part of Astrochem.
 
@@ -201,19 +201,22 @@ jacobian (long int N __attribute__ ((unused)),
         {
           /* Photo-desorption */
 
-          double jac_elem;
+	  if (grain_abundance != 0)
+	    {
+	      double jac_elem;
 
-          jac_elem =
-           (chi * DRAINE_STANDARD_ISRF_FUV * exp (-2 * av) * reactions[i].alpha) /
-           (GRAIN_SITES_PER_CM2 * reactions[i].gamma) *
-           exp (-NV_Ith_S (y, reactions[i].reactants[0]) /
-                (GRAIN_SITES_PER_CM2 * M_PI * pow (grain_size, 2) *
-                 grain_abundance * nh * reactions[i].gamma));
+	      jac_elem =
+		(chi * DRAINE_STANDARD_ISRF_FUV * exp (-2 * av) * reactions[i].alpha) /
+		(GRAIN_SITES_PER_CM2 * reactions[i].gamma) *
+		exp (-NV_Ith_S (y, reactions[i].reactants[0]) /
+		     (GRAIN_SITES_PER_CM2 * M_PI * pow (grain_size, 2) *
+		      grain_abundance * nh * reactions[i].gamma));
 
-          DENSE_ELEM (J, reactions[i].reactants[0], reactions[i].reactants[0]) -=
-           jac_elem;
-          DENSE_ELEM (J, reactions[i].products[0], reactions[i].reactants[0]) +=
-           jac_elem;
+	      DENSE_ELEM (J, reactions[i].reactants[0], reactions[i].reactants[0]) -=
+		jac_elem;
+	      DENSE_ELEM (J, reactions[i].products[0], reactions[i].reactants[0]) +=
+		jac_elem;
+	    }
         }
       else
         {
@@ -346,7 +349,8 @@ int solver_init( const cell_t* cell, const net_t* network, const phys_t* phys,
       || ((CVDense ( astrochem_mem->cvode_mem, network->n_species) != CV_SUCCESS))
 #endif
       || ((CVDlsSetDenseJacFn (  astrochem_mem->cvode_mem, jacobian) != CV_SUCCESS))
-      || (CVodeSetUserData ( astrochem_mem->cvode_mem, &astrochem_mem->params) != CV_SUCCESS))
+      || (CVodeSetUserData ( astrochem_mem->cvode_mem, &astrochem_mem->params) != CV_SUCCESS)
+      || (CVodeSetMaxNumSteps (astrochem_mem->cvode_mem, CVODE_MXSTEPS) != CV_SUCCESS))
     {
       fprintf (stderr, "astrochem: %s:%d: solver initialization failed.\n",
                __FILE__, __LINE__);

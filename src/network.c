@@ -1,7 +1,7 @@
 /*
    network.c - Read the chemical network file
 
-   Copyright (c) 2006-2014 Sebastien Maret
+   Copyright (c) 2006-2016 Sebastien Maret
 
    This file is part of Astrochem.
 
@@ -560,11 +560,14 @@ bool get_species_mass_and_charge( char* species, double* mass, int* charge )
             }
           break;
         }
+      else if (*specie_pt == '(' && *(specie_pt+1) == 'i' && *(specie_pt+2) == 'c' && *(specie_pt+3) == 'e'
+	       && *(specie_pt+4) == ')')
+	break;
       else
-        {
-          fprintf (stderr, "astrochem: error: this specie: %s is not correctly written\n", species );
-          return false;
-        }
+	{
+	  fprintf (stderr, "astrochem: error: this specie: %s is not correctly written\n", species );
+	  return false;
+	}
     }
   // Specie string have been parsed, but last element still have to be taken in account
   if( element_idx > 0 )

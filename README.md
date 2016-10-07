@@ -18,7 +18,7 @@ usually solved in a few seconds. A variety of gas phase process are
 considered, as well as simple gas-grain interactions, such as the
 freeze-out and the desorption via several mechanisms (thermal
 desorption, cosmic-ray desorption and photo-desorption). The computed
-abundances are written in text files, and can be plotted in different
+abundances are written in a HDF5 file, and can be plotted in different
 ways with the tools provided with Astrochem. Chemical reactions and
 their rates are written in a format which is meant to be easy to read
 and to edit. A tool to convert the chemical networks from the OSU and
@@ -52,6 +52,13 @@ How to contribute
 
 Contributions to Astrochem are welcome. Please see the
 [CONTRIBUTING.md](./CONTRIBUTING.md/) file for instructions.
+
+Citing the code
+---------------
+
+If you use the code for your research, please cite
+[Maret & Bergin (2015)](http://adsabs.harvard.edu/abs/2015ascl.soft07010M)
+in your papers.
 
 More information
 ----------------

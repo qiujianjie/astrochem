@@ -1,6 +1,6 @@
 #  configure.ac - Autoconf file for Astrochem
 #
-#  Copyright (c) 2006-2014 Sebastien Maret
+#  Copyright (c) 2006-2016 Sebastien Maret
 #
 #  This file is part of Astrochem.
 #
@@ -18,8 +18,8 @@
 #  along with Astrochem.  If not, see <http://www.gnu.org/licenses/>.
 
 AC_PREREQ(2.59)
-AC_INIT(astrochem, 0.7-beta, http://github.com/smaret/astrochem/issues)
-RELEASE_DATE="Not released yet"
+AC_INIT(astrochem, 0.7, http://github.com/smaret/astrochem/issues)
+RELEASE_DATE="October 6, 2016"
 AC_SUBST([RELEASE_DATE])
 AM_INIT_AUTOMAKE([foreign])
 AC_CONFIG_SRCDIR([config.h.in])
@@ -131,6 +131,7 @@ AC_CONFIG_FILES([Makefile
          	 tests/python_lib_test.py
          	 tests/python_tools_test.py
          	 tests/benchmark.py
+		 tests/benchmark_openmp.py
 		 tests/Makefile])
 
 AC_OUTPUT

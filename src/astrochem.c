@@ -2,7 +2,7 @@
    Astrochem - compute the abundances of chemical species in the
    interstellar medium as as function of time.
 
-   Copyright (c) 2006-2014 Sebastien Maret
+   Copyright (c) 2006-2016 Sebastien Maret
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -142,10 +142,10 @@ main (int argc, char *argv[])
   H5Tset_size ( attrType, MAX_CHAR_FILENAME );
   H5Tset_strpad(attrType,H5T_STR_NULLTERM);
   hid_t attrNetwork = H5Acreate( fid, "chem_file", attrType, simpleDataspace, H5P_DEFAULT, H5P_DEFAULT);
-  H5Awrite( attrNetwork, attrType, realpath( input_params.files.chem_file, NULL ) );
+  H5Awrite( attrNetwork, attrType, input_params.files.chem_file);
   H5Aclose( attrNetwork );
   hid_t attrModel = H5Acreate( fid, "source_file", attrType, simpleDataspace, H5P_DEFAULT, H5P_DEFAULT);
-  H5Awrite( attrModel, attrType, realpath( input_params.files.source_file, NULL ) );
+  H5Awrite( attrModel, attrType, input_params.files.source_file);
   H5Aclose( attrModel );
 
   H5Tclose( attrType );
@@ -247,7 +247,7 @@ main (int argc, char *argv[])
           if( full_solve ( fid, dataset, routeDatasets, dataspace, dataspaceRoute, datatype, route_t_datatype, cell_index, &input_params, source_mdl.mode,
                        &source_mdl.cell[cell_index], &network, &source_mdl.ts, verbose) != EXIT_SUCCESS )
             {
-              return EXIT_FAILURE;
+	      exit (EXIT_FAILURE);
             }
           if (verbose >= 1)
             fprintf (stdout, "Done with cell %d.\n", cell_index);
@@ -327,7 +327,7 @@ version (void)
 #else
   fprintf (stdout, "LAPACK support disabled.\n");
 #endif
-  fprintf (stdout, "Copyright (c) 2006-2014 Sebastien Maret\n");
+  fprintf (stdout, "Copyright (c) 2006-2016 Sebastien Maret\n");
   fprintf (stdout, "\n");
   fprintf (stdout,
            "This is free software. You may redistribute copies of it under the terms\n");
@@ -363,6 +363,10 @@ full_solve (hid_t fid, hid_t dataset, hid_t* routeDatasets, hid_t dataspace, hid
       return EXIT_FAILURE;
     }
 
+#ifdef HAVE_OPENMP
+  omp_set_lock(&lock);
+#endif
+
   // Create the memory dataspace, selecting all output abundances
   hsize_t size = input_params->output.n_output_species;
   hid_t memDataspace = H5Screate_simple(1, &size, NULL);
@@ -382,6 +386,10 @@ full_solve (hid_t fid, hid_t dataset, hid_t* routeDatasets, hid_t dataspace, hid
       routeFileDataspace = H5Scopy(routeDataspace);
     }
 
+#ifdef HAVE_OPENMP
+  omp_unset_lock(&lock);
+#endif
+
   // Initializing abundance
 #if 0 //Ultra complicated code
   const species_name_t* species = malloc( input_params->abundances.n_initial_abundances * sizeof(*species));
@@ -399,6 +407,26 @@ full_solve (hid_t fid, hid_t dataset, hid_t* routeDatasets, hid_t dataspace, hid
   for( i = 0; i <  input_params->abundances.n_initial_abundances ; i++ )
     {
       abundances[ input_params->abundances.initial_abundances[i].species_idx ] = input_params->abundances.initial_abundances[i].abundance;
+    }
+    
+    // Add grain abundances
+    int g, gm, gp;
+    double gabs;
+    g = find_species ("grain", network);
+    gm = find_species ("grain(-)", network);
+    gp = find_species ("grain(+)", network);
+    
+    // Check if grain abundances have already been initialized one way or another
+    gabs=0.0;
+    if(g>=0) gabs += abundances[ g ];
+    if(gm>=0) gabs += abundances[ gm ];
+    if(gp>=0) gabs += abundances[ gp ];
+    
+    if(gabs == 0.0) {
+    	// Grains have not been initialized
+    	// Check that grains are defined in our network, and if so, set the grain abundance
+    	if(g>=0)
+    		abundances[ g ] = input_params->phys.grain_abundance;
     }
 #endif
 
@@ -665,6 +693,9 @@ full_solve (hid_t fid, hid_t dataset, hid_t* routeDatasets, hid_t dataspace, hid
         }
 
     }
+#ifdef HAVE_OPENMP
+  omp_set_lock(&lock);
+#endif
   // Cleaning up hdf5
   H5Sclose(memDataspace);
   H5Sclose(fileDataspace);
@@ -673,7 +704,9 @@ full_solve (hid_t fid, hid_t dataset, hid_t* routeDatasets, hid_t dataspace, hid
       H5Sclose(routeMemDataspace);
       H5Sclose(routeFileDataspace);
     }
-
+#ifdef HAVE_OPENMP
+  omp_unset_lock(&lock);
+#endif
   // Free
   free( output_abundances );
   free( routes );

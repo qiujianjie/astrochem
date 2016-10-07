@@ -2,7 +2,7 @@
 #
 #  libastrochem_test - Test the libastrochem.py module
 #
-#  Copyright (c) 2006-2012 Sebastien Maret
+#  Copyright (c) 2006-2016 Sebastien Maret
 # 
 #  This file is part of Astrochem.
 #
@@ -21,7 +21,7 @@
 
 import sys
 import unittest
-sys.path.append("@abs_top_builddir@/python/")
+sys.path.append("@abs_top_srcdir@/python/")
 import tools
 
 class TestSequenceFunctions(unittest.TestCase):
