@@ -400,7 +400,8 @@ int solve( astrochem_mem_t* astrochem_mem, const net_t* network, double* abundan
     }
 
   realtype t = 0.0;
-  CVode ( astrochem_mem->cvode_mem, (realtype) time, astrochem_mem->y, &t, CV_NORMAL);
+  int cvode_return_flag;
+  cvode_return_flag = CVode (astrochem_mem->cvode_mem, (realtype) time, astrochem_mem->y, &t, CV_NORMAL);
 
   /* Print the cell number, time and time step after each call. */
 
@@ -416,9 +417,17 @@ int solve( astrochem_mem_t* astrochem_mem, const net_t* network, double* abundan
   int i;
   for( i = 0; i < network->n_species; i++ )
     {
-      abundances[i] =  (double) NV_Ith_S ( astrochem_mem->y , i ) / astrochem_mem->density ;
+      abundances[i] =  (double) NV_Ith_S (astrochem_mem->y , i) / astrochem_mem->density ;
     }
-  return 0;
+
+  /* Check the CVODE flag and return. Positive flags correspond to
+     success or warning (99). Negative flags correspond to different
+     errors. */
+  
+  if (cvode_return_flag >= 0)
+    return 0;
+  else
+    return 1;
 }
 
 /**

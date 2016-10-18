@@ -152,7 +152,7 @@ Functions
    :param double time: Time, in seconds
    :param cell_t* new_cell: New cell structure if the physical parameters have changed since the last call
    :param int verbose: Verbosity (0 for quiet, 1 for verbose)
-   :return: 0
+   :return: 0 if the solve was sucessful, -1 otherwise
 
 .. c:function:: void solver_close(astrochem_mem_t* astrochem_mem)
 
