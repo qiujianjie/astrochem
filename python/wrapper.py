@@ -174,8 +174,8 @@ class solver:
         phys.data.grain_size = phys.grain_size
 
         self.data = libpyastrochem.Solver(cell.data, chem_file, phys.data, abs_err,
-                                          rel_err, initial_abundances,
-                                          density, max_timesteps, verbose)
+                                          rel_err, initial_abundances, max_timesteps,
+                                          density, verbose)
 
     def solve(self, time, new_cell=None):
         """
