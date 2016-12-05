@@ -455,7 +455,7 @@ full_solve (hid_t fid, hid_t dataset, hid_t* routeDatasets, hid_t dataspace, hid
   cell_unik.nh = cell->nh[0];
   cell_unik.tgas = cell->tgas[0];
   cell_unik.tdust = cell->tdust[0];
-  if( solver_init( &cell_unik, network, &input_params->phys, abundances, min_nh, input_params->solver.abs_err,  input_params->solver.rel_err, &astrochem_mem ) != EXIT_SUCCESS )
+  if( solver_init( &cell_unik, network, &input_params->phys, abundances, min_nh, input_params->solver.abs_err,  input_params->solver.rel_err, input_params->solver.max_timesteps, &astrochem_mem ) != EXIT_SUCCESS )
     {
       return EXIT_FAILURE;
     }

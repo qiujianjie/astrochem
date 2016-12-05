@@ -54,6 +54,8 @@ main (void)
   double abs_err, rel_err;
   abs_err = 1e-15;
   rel_err = 1e-6;
+  int max_timesteps;
+  max_timesteps = 500;
 
   const char* species[]  = { "X", "Y" };
   const double initial_abundances[] = { 1.0, 0.0 };
@@ -74,7 +76,7 @@ main (void)
 
   astrochem_mem_t astrochem_mem;
 
-  if( solver_init( &cell, &network, &phys, abundances , density, abs_err, rel_err, &astrochem_mem ) != EXIT_SUCCESS )
+  if( solver_init( &cell, &network, &phys, abundances , density, abs_err, rel_err, max_timesteps, &astrochem_mem ) != EXIT_SUCCESS )
     {
       return EXIT_FAILURE;
    }

@@ -267,7 +267,7 @@ jacobian (long int N __attribute__ ((unused)),
  */
 int solver_init( const cell_t* cell, const net_t* network, const phys_t* phys,
                  const double* abundances , double density, double abs_err, double rel_err,
-                 astrochem_mem_t* astrochem_mem )
+                 const long int max_timesteps, astrochem_mem_t* astrochem_mem )
 {
   astrochem_mem->density = density;
 
@@ -351,7 +351,7 @@ int solver_init( const cell_t* cell, const net_t* network, const phys_t* phys,
 #endif
       || ((CVDlsSetDenseJacFn (  astrochem_mem->cvode_mem, jacobian) != CV_SUCCESS))
       || (CVodeSetUserData ( astrochem_mem->cvode_mem, &astrochem_mem->params) != CV_SUCCESS)
-      || (CVodeSetMaxNumSteps (astrochem_mem->cvode_mem, CVODE_MXSTEPS) != CV_SUCCESS))
+      || (CVodeSetMaxNumSteps (astrochem_mem->cvode_mem, max_timesteps) != CV_SUCCESS))
     {
       fprintf (stderr, "astrochem: %s:%d: solver initialization failed.\n",
                __FILE__, __LINE__);

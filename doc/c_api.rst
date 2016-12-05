@@ -122,7 +122,7 @@ Functions
    :param double* abundances: Array containing the abundances of all species
    :return: 0
 
-.. c:function:: int solver_init (const cell_t* cell, const net_t* network, const phys_t* phys, const double* abundances , double density, double abs_err, double rel_err, astrochem_mem_t* astrochem_mem)
+.. c:function:: int solver_init (const cell_t* cell, const net_t* network, const phys_t* phys, const double* abundances, double density, double abs_err, double rel_err, const long int max_timesteps, astrochem_mem_t* astrochem_mem)
 
    Initialize the solver
 
@@ -133,6 +133,7 @@ Functions
    :param double density: Initial density, in :math:`\mathrm{cm^{-3}}`
    :param double abs_err: Solver absolute error on the abundances
    :param double rel_err: Solver relative error on the abundances
+   :param max_timesteps: Solver maximum number of time steps
    :param astrochem_mem_t* astrochem_mem: Astrochem memory structure
    :return: 0 if the initialization was successful, -1 otherwise.	 
 

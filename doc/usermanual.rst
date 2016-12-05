@@ -759,6 +759,12 @@ ODE solver parameters. These parameters are:
    The solver relative error on the computed abundances.
    The default value is :math:`10^{-6}`.
 
+``max_timesteps``
+
+   The maximum number of steps to be taken by the solver in its
+   attempt to reach the next output time. If it set to a negative
+   value, there is no maximum. The default value is 1000.
+
 A note on tolerances: Astrochem adjusts the internal time step so that
 the relative error on any abundance is always lower that ``rel_err``,
 unless the given abundance is lower that ``abs_err``. Because errors on
@@ -1385,9 +1391,11 @@ relative error:
 
     double abs_err = ABS_ERR_DEFAULT;
     double rel_err = REL_ERR_DEFAULT;
+    long int max_timesteps = MAX_TIMESTEPS_DEFAULT;
     astrochem_mem_t astrochem_mem;
 
-    solver_init (&cell, &network, &phys, abundances , density, abs_err, rel_err, &astrochem_mem );
+    solver_init (&cell, &network, &phys, abundances , density, abs_err, rel_err,
+                 max_timesteps, &astrochem_mem);
 
 The ``astrochem_mem`` variable is a structure of type
 :c:type:`astrochem_mem_t` that contains the various parameters and
@@ -1490,7 +1498,9 @@ The next step is to initialize the solver:
     verbose = 0
     abs_err = 1e-15
     rel_err = 1e-6
-    s = solver(c,  "network.chm", p , abs_err, rel_err, initial_abundances, density, verbose)
+    max_timesteps = 1000
+    s = solver(c,  "network.chm", p , abs_err, rel_err, initial_abundances, density,
+               max_timesteps, verbose)
 
 Then actual computation can be done by *advancing time,*, which is
 typically done within a loop:

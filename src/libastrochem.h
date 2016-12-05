@@ -120,7 +120,7 @@ int set_initial_abundances (const char** species, int n_initialized_abundances,
 
 int solver_init (const cell_t* cell, const net_t* network, const phys_t* phys,
                  const double* abundances , double density, double abs_err, double rel_err,
-                 astrochem_mem_t* astrochem_mem);
+                 const long int max_timesteps, astrochem_mem_t* astrochem_mem);
 
 int solve (astrochem_mem_t* astrochem_mem, const net_t* network,
            double* abundances, double time , const cell_t* new_cell, int verbose);
