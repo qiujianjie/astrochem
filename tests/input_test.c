@@ -75,6 +75,7 @@ main (void)
   fprintf (f, "ti = 1e-6\n");
   fprintf (f, "tf = 1e9\n");
   fprintf (f, "rel_err = 1e-6\n");
+  fprintf (f, "max_timesteps = 500\n");
   fprintf (f, "# Initial abundances\n");
   fprintf (f, "[abundances]\n");
   fprintf (f, "H2      = 0.5\n");
@@ -126,6 +127,7 @@ main (void)
       (input_params.solver.tf == 1e9 * CONST_MKSA_YEAR) &&
       (input_params.solver.abs_err == ABS_ERR_DEFAULT) &&
       (input_params.solver.rel_err == 1e-6) &&
+      (input_params.solver.max_timesteps == 500) &&
       (input_params.output.time_steps == 64) &&
       (input_params.abundances.n_initial_abundances == 13) &&
       (strcmp (network.species[input_params.abundances.initial_abundances[0].species_idx].name, "H2") == 0) &&

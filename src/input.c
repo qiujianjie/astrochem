@@ -134,6 +134,7 @@ read_input (const char *input_file, inp_t * input_params,
   input_params->solver.tf = TF_DEFAULT;
   input_params->solver.abs_err = ABS_ERR_DEFAULT;
   input_params->solver.rel_err = REL_ERR_DEFAULT;
+  input_params->solver.max_timesteps = DEFAULT_MAX_TIMESTEPS;
   input_params->output.time_steps = TIME_STEPS_DEFAULT;
   input_params->output.trace_routes = TRACE_ROUTES_DEFAULT;
 
@@ -202,6 +203,8 @@ read_input (const char *input_file, inp_t * input_params,
                 input_params->solver.abs_err = atof (value);
               else if (strcmp (parameter, "rel_err") == 0)
                 input_params->solver.rel_err = atof (value);
+              else if (strcmp (parameter, "max_timesteps") == 0)
+                input_params->solver.max_timesteps = atol (value);
               else
                 {
                   fprintf (stderr, "astrochem: error: incorrect input in %s line %i.\n",

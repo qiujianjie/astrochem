@@ -21,8 +21,9 @@ import sys
 import numpy
 import unittest
 import math
+sys.path.append("@abs_top_srcdir@/python/")
 sys.path.append("@abs_top_builddir@/python/libpyastrochem/.libs")
-import libpyastrochem as astrochem
+import wrapper as astrochem
 
 class TestSequenceFunctions(unittest.TestCase):
 
@@ -40,17 +41,19 @@ X -> Y    1e-9    0    0    2    1
         initial_abundances = {"X": 1.0, "Y": 0.0}
         abs_err = 1e-15;
         rel_err = 1e-6;
+        max_timesteps = 500;
 
-        p = astrochem.Phys()
+        p = astrochem.phys()
 
         density = 1000
         av = 20
         temp = 10
-        c = astrochem.Cell( av, density , temp,  temp  )
+        c = astrochem.cell( av, density , temp,  temp  )
 
         verbose = 0
 
-        s = astrochem.Solver( c,  "network.chm", p , abs_err, rel_err, initial_abundances, density, verbose )
+        s = astrochem.solver( c, "network.chm", p , abs_err, rel_err,
+                              initial_abundances, density, verbose, max_timesteps)
 
         time = 0
 

@@ -139,7 +139,8 @@ class solver:
 
     """
 
-    def __init__(self, cell, chem_file, phys, abs_err, rel_err, initial_abundances, density, verbose):
+    def __init__(self, cell, chem_file, phys, abs_err, rel_err,
+                 initial_abundances, density, verbose, max_timesteps=1000000):
         """
         Create a solver instance.
 
@@ -161,6 +162,8 @@ class solver:
             Density to use in solver.
         verbose : int
             verbose if 1, quiet if 0.
+        max_timesteps : int
+            Maximum internal number of timesteps for the solver
 
         """
 
@@ -172,7 +175,7 @@ class solver:
 
         self.data = libpyastrochem.Solver(cell.data, chem_file, phys.data, abs_err,
                                           rel_err, initial_abundances,
-                                          density, verbose)
+                                          density, max_timesteps, verbose)
 
     def solve(self, time, new_cell=None):
         """

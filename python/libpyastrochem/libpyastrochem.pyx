@@ -46,7 +46,7 @@ cdef extern from "../../src/libastrochem.h":
     int alloc_abundances( const net_t* network, double** abundances )
     void free_abundances( double* abundances )
     int set_initial_abundances( char** species, int n_initialized_abundances, const double* initial_abundances, const net_t* network, double* abundances )
-    int solver_init( const cell_t* cell, const net_t* network, const phys_t* phys, const double* abundances , double density, double abs_err, double rel_err, astrochem_mem_t* astrochem_mem )
+    int solver_init( const cell_t* cell, const net_t* network, const phys_t* phys, const double* abundances , double density, double abs_err, double rel_err, const int max_timesteps, astrochem_mem_t* astrochem_mem )
     int solve( const astrochem_mem_t* astrochem_mem, const net_t* network, double* abundances, double time , const cell_t* new_cell, int verbose )
     void solver_close( astrochem_mem_t* astrochem_mem )
 
@@ -182,7 +182,7 @@ cdef class Solver:
     """
     Chemical reaction solver
 
-    Solver( cell , const char* chem_file, phys, abs_err, rel_err, initial_abundances , double density, int verbose )
+    Solver( cell , const char* chem_file, phys, abs_err, rel_err, initial_abundances , double density, max_timesteps, int verbose )
     Create a chemical reaction solver
 
     Arguments:
@@ -191,8 +191,10 @@ cdef class Solver:
     phys                 -- Physical properties class to use in solver
     abs_err              -- Absolute acceptable error to use in solver
     rel_err              -- Relative acceptable error to use in solver
+    max_timesteps        -- Maximum number of timesteps in solver
     initial_abundances   -- Initial abundances dictionnary with format {Species:Value}
     density              -- Density to use in solver
+    max_timesteps        -- Maximum number of timesteps
     verbose              -- verbose if 1, quiet if 0
     """
     cdef astrochem_mem_t astrochemstruct
@@ -200,7 +202,9 @@ cdef class Solver:
     cdef Network network
     cdef int verbose
 
-    def __cinit__( self , cell , const char* chem_file, phys, abs_err, rel_err, initial_abundances , double density, int verbose ):
+    def __cinit__( self , cell , const char* chem_file, phys, abs_err,
+                   rel_err, initial_abundances , const long int max_timesteps, double
+                   density, int verbose ):
         self.verbose = verbose
         self.network = Network( chem_file, verbose )
         cdef net_t c_net = self.network.thisstruct
@@ -220,7 +224,9 @@ cdef class Solver:
         free( initial_abundances_str )
         free( initial_abundances_val )
 
-        solver_init( &c_cell, &c_net, &c_phys , self.abundances, density, abs_err, rel_err, &self.astrochemstruct )
+        solver_init( &c_cell, &c_net, &c_phys , self.abundances,
+                     density, abs_err, rel_err, max_timesteps,
+                     &self.astrochemstruct )
 
     def __dealloc__(self):
         free_abundances( self.abundances )
